@@ -2,7 +2,7 @@ import type { Schema, Plugin, PDFRenderProps, UIRenderProps } from '@pdfme/commo
 import { rotatePoint, convertForPdfLayoutProps, hex2RgbColor } from '../utils.js';
 import { HEX_COLOR_PATTERN } from '../constants.js';
 
-const DEFAULT_LINE_COLOR = '#000000';
+const DEFAULT_LINE_COLOR = '#800080';
 
 interface LineSchema extends Schema {
   color: string;
@@ -16,15 +16,19 @@ const lineSchema: Plugin<LineSchema> = {
       width,
       height,
       rotate,
-      position: { x, y },
+      position:{x , y},
+      
+      startPosition: {x1, y1},
+      
+      endPosition:{x2,y2},
       opacity,
     } = convertForPdfLayoutProps({ schema, pageHeight, applyRotateTranslate: false });
-    const pivot = { x: x + width / 2, y: y + height / 2 };
+    const pivot = { x: x, y: y };
     page.drawLine({
-      start: rotatePoint({ x, y: y + height / 2 }, pivot, rotate.angle),
-      end: rotatePoint({ x: x + width, y: y + height / 2 }, pivot, rotate.angle),
+      start: {x:x1,y:y1},
+      end: {x:x2,y:y2},
       thickness: height,
-      color: hex2RgbColor(schema.color ?? DEFAULT_LINE_COLOR),
+      color: hex2RgbColor(DEFAULT_LINE_COLOR),
       opacity: opacity,
     });
   },
@@ -55,7 +59,9 @@ const lineSchema: Plugin<LineSchema> = {
     defaultSchema: {
       type: 'line',
       position: { x: 0, y: 0 },
-      width: 50,
+      startPosition:{x1:0,y1:0},
+      endPosition:{x2:5,y2:5},
+      width: 5,
       height: 1,
       rotate: 0,
       opacity: 1,

@@ -11,15 +11,30 @@ export const convertForPdfLayoutProps = ({
   pageHeight: number;
   applyRotateTranslate?: boolean;
 }) => {
-  const { width: mmWidth, height: mmHeight, position, rotate, opacity } = schema;
+  const { width: mmWidth, height: mmHeight, position,startPosition,endPosition, rotate, opacity } = schema;
   const { x: mmX, y: mmY } = position;
+ 
+  const { x1: mmX1, y1: mmY1 } = startPosition;
+   
+  const { x2: mmX2, y2: mmY2 } = endPosition;
 
+
+  console.log(mmX);
+  console.log(mmX1);
+  console.log(mmX2);
   const rotateDegrees = rotate ? -rotate : 0;
   const width = mm2pt(mmWidth);
   const height = mm2pt(mmHeight);
+  let x1=mm2pt(mmX1);
+  let x2=mm2pt(mmX2);
   let x = mm2pt(mmX);
+  console.log(x);
+  console.log(x1);
+  console.log(x2);
   // PDF coordinate system is from bottom left, UI is top left, so we need to flip the y axis
   let y = pageHeight - mm2pt(mmY) - height;
+  let y1 = pageHeight - mm2pt(mmY1) - height;
+  let y2 = pageHeight - mm2pt(mmY2) - height;
 
   if (rotateDegrees && applyRotateTranslate) {
     // If rotating we must pivot around the same point as the UI performs its rotation.
@@ -33,7 +48,10 @@ export const convertForPdfLayoutProps = ({
   }
 
   return {
+    
     position: { x, y },
+    startPosition:{x1,y1},
+    endPosition:{x2,y2},
     height: height,
     width: width,
     rotate: degrees(rotateDegrees),

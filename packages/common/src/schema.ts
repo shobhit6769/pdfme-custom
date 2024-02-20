@@ -66,6 +66,8 @@ export const Schema = z
     readOnly: z.boolean().optional(),
     readOnlyValue: z.string().optional(),
     position: z.object({ x: z.number(), y: z.number() }),
+    startPosition: z.object({ x1: z.number(), y1: z.number() }),
+    endPosition: z.object({ x2: z.number(), y2: z.number() }),
     width: z.number(),
     height: z.number(),
     rotate: z.number().optional(),
